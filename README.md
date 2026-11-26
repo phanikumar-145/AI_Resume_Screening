@@ -1,294 +1,118 @@
 # AI Resume Screening System
 
-An AI-assisted Resume Screening System built using Python, Streamlit, PyMuPDF, and machine learning-related libraries. The application analyzes PDF resumes against job descriptions, identifies matching technical skills, calculates a resume match score, and displays a candidate suitability status.
+A Streamlit application that extracts text from PDF resumes and compares the extracted content with a job description. It uses a predefined list of technical skills and keyword matching to calculate a simple match percentage.
 
-## Project Overview
+## Features
 
-Recruiters often receive a large number of resumes for a single job opening. Manually reviewing every resume and comparing candidate skills with job requirements can be time-consuming.
-
-This project simplifies the initial screening process by extracting text from uploaded PDF resumes and comparing the extracted information with a given job description.
-
-The application calculates a skill match percentage and classifies candidates into three categories: Selected, Shortlisted, or Rejected.
-
-## Key Features
-
-- Upload candidate resumes in PDF format.
-- Enter a job description for comparison.
-- Extract text from PDF documents using PyMuPDF.
-- Identify technical skills mentioned in the job description.
-- Compare required skills with skills found in the resume.
-- Calculate a resume match percentage.
-- Display candidate suitability status.
-- Preview extracted resume text.
-- Provide an interactive Streamlit interface.
-- Validate resume uploads and job description inputs.
+- Upload a resume in PDF format.
+- Enter a job description.
+- Extract text from the uploaded PDF using PyMuPDF.
+- Identify skills mentioned in the job description.
+- Compare those skills with the extracted resume text.
+- Display a match percentage and a rule-based candidate category.
+- Preview the extracted resume text.
 
 ## Technology Stack
 
-| Technology | Purpose |
-|---|---|
-| Python | Core application development |
-| Streamlit | Interactive user interface |
-| PyMuPDF | PDF text extraction |
-| Scikit-learn concepts | Foundation for future ML improvements |
-| Sentence Transformers | Installed dependency for potential semantic matching |
-| PyTorch | Deep learning library dependency |
-
-Note: The current matching implementation uses predefined skill keywords and exact text matching. It does not currently use a trained machine learning model or semantic similarity embeddings.
-
-## Project Architecture
-
-```text
-              User
-               |
-               |
-       Streamlit Interface
-               |
-               |
-        Enter Job Description
-               |
-               |
-          Upload Resume
-               |
-               |
-        PDF Text Extraction
-               |
-               |
-             PyMuPDF
-               |
-               |
-        Extracted Resume Text
-               |
-               |
-        Skill Matching Logic
-               |
-               |
-       Compare Required Skills
-               |
-               |
-        Calculate Match Score
-               |
-               |
-       Determine Candidate Status
-               |
-               |
-         Display Results
-```
+- Python
+- Streamlit
+- PyMuPDF
+- Regular-expression-free keyword matching
 
 ## Project Structure
 
 ```text
 AI_Resume_Screening/
-|
-|-- app.py
-|-- ml_model.py
-|-- utils.py
-|-- requirements.txt
-|-- __pycache__/
+├── app.py
+├── ml_model.py
+├── utils.py
+├── requirements.txt
+├── .gitignore
+└── README.md
 ```
 
-### Main Files
+## How the Application Works
 
-**app.py**
+1. The user enters a job description and uploads a PDF resume.
+2. `utils.py` extracts text from the PDF using PyMuPDF.
+3. `ml_model.py` checks which predefined skills appear in the job description and resume.
+4. The application calculates a match percentage from the number of matching required skills.
+5. Streamlit displays the score, category, and extracted resume text.
 
-Contains the Streamlit frontend. It allows users to enter a job description, upload a PDF resume, start the analysis, and view the match score and candidate status.
+## Setup and Installation
 
-**ml_model.py**
-
-Contains the resume matching logic. It identifies predefined technical skills in the job description and resume, calculates the match percentage, and determines the candidate status.
-
-**utils.py**
-
-Contains the PDF text extraction function implemented using PyMuPDF.
-
-**requirements.txt**
-
-Contains the Python libraries required to run the application.
-
-## Installation and Setup
-
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/phanikumar-145/AI_Resume_Screening.git
-```
-
-Navigate to the project directory:
-
-```bash
 cd AI_Resume_Screening
 ```
 
-### 2. Create a Virtual Environment
+### 2. Create a virtual environment
 
-```bash
-python -m venv venv
+**Windows PowerShell**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
 ```
 
-Activate the virtual environment on Windows:
+**macOS/Linux**
 
 ```bash
-venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the Application
-
-Execute the following command:
+### 4. Run the application
 
 ```bash
 streamlit run app.py
 ```
 
-The application will open in your default browser.
+Streamlit will display a local URL in the terminal. Open that URL in your browser.
 
-## How to Use the Application
+## Match Score Logic
 
-1. Start the Streamlit application.
-2. Enter the job description in the text area.
-3. Upload a candidate resume in PDF format.
-4. Click the Analyze Resume button.
-5. Wait for the resume text extraction and skill comparison.
-6. View the calculated match percentage.
-7. Review the candidate suitability status.
-8. Examine the extracted resume text.
+The current implementation uses a predefined list of skills such as Python, SQL, machine learning, FastAPI, React, and PostgreSQL.
 
-## Resume Matching Methodology
-
-The application uses a predefined list of technical skills to compare resumes with job descriptions.
-
-### Step 1: Resume Text Extraction
-
-PyMuPDF extracts text from the uploaded PDF document.
-
-### Step 2: Skill Identification
-
-The application checks for predefined skills in the job description.
-
-Examples include:
-
-- Python
-- SQL
-- Machine Learning
-- Deep Learning
-- TensorFlow
-- PyTorch
-- Pandas
-- NumPy
-- Scikit-learn
-- NLP
-- Generative AI
-- LangChain
-- FastAPI
-- Streamlit
-- PostgreSQL
-- MongoDB
-- React
-- JavaScript
-
-### Step 3: Skill Matching
-
-The extracted resume text and job description are converted to lowercase.
-
-The application checks which required skills appear in the resume.
-
-### Step 4: Match Score Calculation
-
-The match score is calculated using:
-
-```python
-match_score = (
-    len(matched_skills) / len(required_skills)
-) * 100
-```
-
-Where:
-
-- Required Skills: Skills identified in the job description.
-- Matched Skills: Required skills also found in the resume.
-
-### Step 5: Candidate Classification
-
-The application assigns candidate status based on the match score.
-
-| Match Score | Candidate Status |
-|---|---|
-| 80% and above | Selected |
-| 60% to below 80% | Shortlisted |
-| Below 60% | Rejected |
-
-If the job description contains no recognized skills, the application returns a score of zero.
-
-## Example
-
-### Job Description
+The match score is calculated as:
 
 ```text
-We are looking for a Python developer with experience
-in SQL, Machine Learning, Pandas, NumPy, and FastAPI.
+Match Score = (Number of required skills found in the resume
+               / Number of skills found in the job description) * 100
 ```
 
-### Resume Skills
+Only skills identified in the job description are considered required skills. This keeps the score within the expected 0–100 range.
 
-```text
-Python
-SQL
-Machine Learning
-Pandas
-NumPy
-```
+The displayed candidate category is based on fixed thresholds in `ml_model.py`:
 
-### Example Result
+- 80% and above: Selected
+- 60% to below 80%: Shortlisted
+- Below 60%: Rejected
 
-| Required Skill | Resume Match |
-|---|---|
-| Python | Matched |
-| SQL | Matched |
-| Machine Learning | Matched |
-| Pandas | Matched |
-| NumPy | Matched |
-| FastAPI | Not Matched |
+These labels are simple demonstration rules, not validated hiring criteria.
 
-Match Score: 83.33%
+## Limitations
 
-Candidate Status: Selected
+- This is a keyword-matching project, not a trained machine-learning or semantic-understanding model.
+- It may miss synonyms, related skills, context, and experience depth.
+- A skill can be counted even if it appears in an unrelated context.
+- Image-only or scanned PDFs may not provide extractable text unless OCR is added.
+- The skill list is predefined in `ml_model.py` and may need to be updated for different job roles.
+- The match score should not be used as the sole basis for hiring decisions. A human reviewer should evaluate each application.
 
-This is an illustrative example of the matching calculation.
+## Possible Improvements
 
-## Future Improvements
-
-- Implement semantic similarity using Sentence Transformers.
-- Add skill extraction using NLP techniques.
-- Support multiple resume uploads.
-- Rank candidates based on match scores.
-- Extract education and work experience.
-- Identify missing skills for each candidate.
-- Support DOCX resume uploads.
-- Add downloadable screening reports.
-- Store candidate information in a database.
-- Add recruiter dashboards and candidate filtering.
-- Introduce explainable matching results.
-- Evaluate matching quality using labeled resume and job-description datasets.
-
-## Important Note
-
-This application is designed as an initial resume-screening aid. Its keyword-based matching score should not be treated as a definitive measure of candidate ability or suitability.
-
-Recruiters should review the complete resume and assess candidates using consistent, job-related criteria. The automated status should not be used as the sole basis for hiring decisions.
-
-## Author
-
-**Phani Kumar**
-
-AI/ML and Generative AI Developer
-
-GitHub: https://github.com/phanikumar-145
-
-## Project Purpose
-
-This project demonstrates practical implementation of PDF processing, text extraction, keyword-based skill matching, percentage-based scoring, and interactive application development using Python and Streamlit.
+- Add OCR support for scanned resumes.
+- Use semantic similarity or embeddings to compare resume content with job requirements.
+- Extract skills, education, and experience into structured fields.
+- Add tests for PDF extraction and scoring.
+- Add file-size limits and clearer handling for encrypted, corrupted, or empty PDFs.
+- Allow recruiters to customize the skills list and scoring weights.
